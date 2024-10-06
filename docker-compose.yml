@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: gauss23
+      POSTGRES_DB: weather_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:gauss23@localhost/weather_db
+      - OPENWEATHER_API_KEY=gntech_leite_diego:LJq92t4xVD
+    ports:
+      - "8000:8000"
+
+volumes:
+  db_data:
